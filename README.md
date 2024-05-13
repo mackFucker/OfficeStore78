@@ -3,8 +3,7 @@
 Приложение-магазин для продажи комплектующих и готовых сборок ПК, для реализации будет использован C# в связке с MySQL.
 Для работы данного приложение мне понадабятся слежующие таблицы: 
 
-Products Table:
-+ This table will store information about all the products available in the store. The columns can include:
+Products Table: This table will store information about all the products available in the store. The columns can include:
 + ProductID (Primary Key, Auto Increment)
 + ProductName
 + ProductDescription
@@ -15,7 +14,8 @@ Products Table:
 Categories Table: This table will store information about the different categories of products available in the store. The columns can include:
 + CategoryID (Primary Key, Auto Increment)
 + CategoryName
-+ Orders Table: This table will store information about all the orders placed by customers. The columns can include:
+  
+Orders Table: This table will store information about all the orders placed by customers. The columns can include:
 + OrderID (Primary Key, Auto Increment)
 + CustomerID (Foreign Key)
 + OrderDate
@@ -42,5 +42,4 @@ Reviews Table: This table will store information about the reviews left by custo
 + ProductID (Foreign Key)
 + CustomerID (Foreign Key)
 + Rating
-ReviewText
-ReviewDate
+
