@@ -1,0 +1,16 @@
+C:\Users\elevenqtwo\Desktop\college-project\college-project\bin\Debug\net8.0-windows\college-project.exe
+C:\Users\elevenqtwo\Desktop\college-project\college-project\bin\Debug\net8.0-windows\college-project.deps.json
+C:\Users\elevenqtwo\Desktop\college-project\college-project\bin\Debug\net8.0-windows\college-project.runtimeconfig.json
+C:\Users\elevenqtwo\Desktop\college-project\college-project\bin\Debug\net8.0-windows\college-project.dll
+C:\Users\elevenqtwo\Desktop\college-project\college-project\bin\Debug\net8.0-windows\college-project.pdb
+C:\Users\elevenqtwo\Desktop\college-project\college-project\obj\Debug\net8.0-windows\college_project.Form1.resources
+C:\Users\elevenqtwo\Desktop\college-project\college-project\obj\Debug\net8.0-windows\college-project.csproj.GenerateResource.cache
+C:\Users\elevenqtwo\Desktop\college-project\college-project\obj\Debug\net8.0-windows\college-project.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\elevenqtwo\Desktop\college-project\college-project\obj\Debug\net8.0-windows\college-project.AssemblyInfoInputs.cache
+C:\Users\elevenqtwo\Desktop\college-project\college-project\obj\Debug\net8.0-windows\college-project.AssemblyInfo.cs
+C:\Users\elevenqtwo\Desktop\college-project\college-project\obj\Debug\net8.0-windows\college-project.csproj.CoreCompileInputs.cache
+C:\Users\elevenqtwo\Desktop\college-project\college-project\obj\Debug\net8.0-windows\college-project.dll
+C:\Users\elevenqtwo\Desktop\college-project\college-project\obj\Debug\net8.0-windows\refint\college-project.dll
+C:\Users\elevenqtwo\Desktop\college-project\college-project\obj\Debug\net8.0-windows\college-project.pdb
+C:\Users\elevenqtwo\Desktop\college-project\college-project\obj\Debug\net8.0-windows\college-project.genruntimeconfig.cache
+C:\Users\elevenqtwo\Desktop\college-project\college-project\obj\Debug\net8.0-windows\ref\college-project.dll
