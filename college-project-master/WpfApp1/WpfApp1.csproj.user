@@ -1,27 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
+  <ItemGroup />
   <ItemGroup>
-    <ApplicationDefinition Update="App.xaml">
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="LoginUserWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="RegisterUserWindow.xaml.cs">
+    <Compile Update="ViewProductsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="LoginUserWindow.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="MainWindow.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="RegisterUserWindow.xaml">
+    <Page Update="ViewProductsWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

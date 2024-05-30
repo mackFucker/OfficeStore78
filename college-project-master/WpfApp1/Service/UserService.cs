@@ -9,18 +9,64 @@ using MySql.Data.MySqlClient;
 
 namespace WpfApp1.Service
 {
-    internal class UserService
+    public class UserService
     {
+
         private readonly MySqlConnection connection;
+        public static string LoggedInUserRole { get; private set; }
+
 
         public UserService()
         {
             string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
             connection = new MySqlConnection(connectionString);
+
+            EnsureUsersTableExists();
         }
 
-        internal void RegisterUser(string email, string firstName, string lastName, string password)
+        internal void EnsureUsersTableExists()
+        {
+            try
+            {
+                connection.Open();
+                MySqlCommand command = new("CREATE TABLE IF NOT EXISTS users (" +
+                                           "id INT AUTO_INCREMENT PRIMARY KEY, " +
+                                           "email VARCHAR(255) NOT NULL, " +
+                                           "first_name VARCHAR(255), " +
+                                           "last_name VARCHAR(255), " +
+                                           "password VARCHAR(255) NOT NULL, " +
+                                           "role VARCHAR(50) NOT NULL" +
+                                           ");", connection);
+                command.ExecuteNonQuery();
+
+                // Check if the default admin user exists
+                command.CommandText = "SELECT COUNT(*) FROM users WHERE email = 'admin';";
+                int count = Convert.ToInt32(command.ExecuteScalar());
+
+                if (count == 0)
+                {
+                    // Insert the default admin user
+                    string hashedPassword = BCrypt.Net.BCrypt.HashPassword("admin");
+                    command.CommandText = "INSERT INTO users (email, first_name, last_name, password, role) VALUES ('admin', 'Admin', 'User', @password, 'Admin');";
+                    command.Parameters.Clear();
+                    command.Parameters.AddWithValue("@password", hashedPassword);
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show("Error ensuring users table exists: " + ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+
+
+        internal bool RegisterUser(string email, string firstName, string lastName, string password, string role)
         {
             try
             {
@@ -34,15 +80,16 @@ namespace WpfApp1.Service
                 if (count > 0)
                 {
                     MessageBox.Show("User with this email already exists.");
-                    return;
+                    return false;
                 }
 
                 // Hash the password
                 string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
 
-                // Insert the user into the database
-                command.CommandText = "INSERT INTO users (email, first_name, last_name, password) VALUES (@email, @first_name, @last_name, @password);";
+                // Insert the user into the database                
+                command.CommandText = "INSERT INTO users (email, first_name, last_name, password, role) VALUES (@email, @first_name, @last_name, @password, @role);";
                 command.Parameters.Clear();
+                command.Parameters.AddWithValue("@role", role);
                 command.Parameters.AddWithValue("@email", email);
                 command.Parameters.AddWithValue("@first_name", firstName);
                 command.Parameters.AddWithValue("@last_name", lastName);
@@ -50,10 +97,12 @@ namespace WpfApp1.Service
                 command.ExecuteNonQuery();
 
                 MessageBox.Show("User registered successfully!");
+                return true;
             }
             catch (MySqlException ex)
             {
                 MessageBox.Show("Error registering user: " + ex.Message);
+                return false;
             }
             finally
             {
@@ -61,14 +110,42 @@ namespace WpfApp1.Service
             }
         }
 
-        internal void DeleteUser(string email)
+
+        private bool IsAdmin(string email)
         {
+            try
+            {
+                connection.Open();
+                MySqlCommand command = new("SELECT role FROM users WHERE email = @userEmail;", connection);
+                command.Parameters.AddWithValue("@userEmail", email);
+                string role = (string)command.ExecuteScalar();
+                return role == "Admin";
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show("Error checking user role: " + ex.Message);
+                return false;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        internal void DeleteUser(string adminEmail, string email)
+        {
+            if (!IsAdmin(adminEmail))
+            {
+                MessageBox.Show("Only admin can delete users.");
+                return;
+            }
+
             try
             {
                 connection.Open();
 
                 // Check if the user exists
-                MySqlCommand command = new ("SELECT COUNT(*) FROM users WHERE email = @email;", connection);
+                MySqlCommand command = new("SELECT COUNT(*) FROM users WHERE email = @email;", connection);
                 command.Parameters.AddWithValue("@email", email);
                 int count = Convert.ToInt32(command.ExecuteScalar());
 
@@ -95,8 +172,14 @@ namespace WpfApp1.Service
             }
         }
 
-        internal void DeleteUser(int id)
+        internal void DeleteUser(string adminEmail, int id)
         {
+            if (!IsAdmin(adminEmail))
+            {
+                MessageBox.Show("Only admin can delete users.");
+                return;
+            }
+
             try
             {
                 connection.Open();
@@ -151,49 +234,43 @@ namespace WpfApp1.Service
             }
         }
 
-        internal void LoginUser(string email, string password)
+
+        internal bool LoginUser(string email, string password)
         {
             try
             {
                 connection.Open();
+                MySqlCommand command = new("SELECT password, role FROM users WHERE email = @userEmail;", connection);
+                command.Parameters.AddWithValue("@userEmail", email);
 
-                // Check if the user exists
-                MySqlCommand command = new("SELECT COUNT(*) FROM users WHERE email = @email;", connection);
-                command.Parameters.AddWithValue("@email", email);
-                int count = Convert.ToInt32(command.ExecuteScalar());
-
-                if (count == 0)
+                using (var reader = command.ExecuteReader())
                 {
-                    MessageBox.Show("User with this email does not exist.");
-                    return;
+                    if (reader.Read())
+                    {
+                        string hashedPassword = reader.GetString(0);
+                        string role = reader.GetString(1);
+
+                        if (BCrypt.Net.BCrypt.Verify(password, hashedPassword))
+                        {
+                            LoggedInUserRole = role;
+                            MessageBox.Show("Login successful!");
+                            return true;
+                        }
+                    }
                 }
 
-                // Get the user's hashed password from the database
-                command.CommandText = "SELECT password FROM users WHERE email = @email;";
-                string hashedPassword = command.ExecuteScalar().ToString();
-
-                // Verify the password
-                if (!BCrypt.Net.BCrypt.Verify(password, hashedPassword))
-                {
-                    MessageBox.Show("Invalid password.");
-                    return;
-                }
-
-                // Password is valid, open the main application window
-                MessageBox.Show("Login successful!");
-                // You can add code here to open the main application window and close the login window
+                MessageBox.Show("Invalid email or password.");
+                return false;
             }
             catch (MySqlException ex)
             {
                 MessageBox.Show("Error logging in: " + ex.Message);
+                return false;
             }
             finally
             {
                 connection.Close();
             }
         }
-
     }
-
-
 }

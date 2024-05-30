@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using WpfApp1.Service;
 
 namespace WpfApp1
 {
@@ -8,7 +9,10 @@ namespace WpfApp1
         {
             base.OnStartup(e);
 
-            var loginWindow = new LoginWindow();
+            UserService userService = new UserService();
+            ProductService productService = new ProductService();
+
+            LoginWindow loginWindow = new LoginWindow();
             loginWindow.Show();
         }
     }

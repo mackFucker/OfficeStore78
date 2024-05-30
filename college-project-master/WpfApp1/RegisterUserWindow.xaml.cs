@@ -28,7 +28,13 @@ namespace WpfApp1
                 return;
             }
 
-            userService.RegisterUser(email, firstName, lastName, password);
+            bool isRegistered = userService.RegisterUser(email, firstName, lastName, password, "Manager");
+            if (isRegistered)
+            {
+                var loginWindow = new LoginWindow();
+                loginWindow.Show();
+                this.Close();
+            }
         }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
@@ -39,4 +45,5 @@ namespace WpfApp1
             e.Handled = true;
         }
     }
+
 }

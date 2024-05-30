@@ -1,24 +1,39 @@
-﻿using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using WpfApp1.Service;
 
 namespace WpfApp1
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private readonly UserService _userService;
+        private readonly ProductService _productService;
+
+        public MainWindow(UserService userService, ProductService productService)
         {
             InitializeComponent();
+            _userService = userService;
+            _productService = productService;
+            ConfigureUIBasedOnRole();
+        }
+
+        private void ConfigureUIBasedOnRole()
+        {
+            if (UserService.LoggedInUserRole != "Admin" && UserService.LoggedInUserRole != "Manager")
+            {
+                AddProductButton.IsEnabled = false;
+            }
+        }
+
+        private void AddProductButton_Click(object sender, RoutedEventArgs e)
+        {
+            AddProductWindow addProductWindow = new AddProductWindow(_productService);
+            addProductWindow.ShowDialog();
+        }
+
+        private void ViewProductsButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewProductsWindow viewProductsWindow = new ViewProductsWindow(_productService);
+            viewProductsWindow.ShowDialog();
         }
     }
 }

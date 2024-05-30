@@ -1,15 +1,19 @@
 ﻿using System.Windows;
 using System.Windows.Navigation;
-using WpfApp1.db;
 using WpfApp1.Service;
 
 namespace WpfApp1
 {
     public partial class LoginWindow : Window
     {
+        private readonly UserService _userService;
+        private readonly ProductService _productService;
+
         public LoginWindow()
         {
             InitializeComponent();
+            _userService = new UserService();
+            _productService = new ProductService();
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -17,8 +21,13 @@ namespace WpfApp1
             string email = emailTextBox.Text;
             string password = passwordBox.Password;
 
-            UserService userService = new UserService();
-            userService.LoginUser(email, password);
+            bool isLoggedIn = _userService.LoginUser(email, password);
+            if (isLoggedIn)
+            {
+                var mainWindow = new MainWindow(_userService, _productService);
+                mainWindow.Show();
+                this.Close();
+            }
         }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)

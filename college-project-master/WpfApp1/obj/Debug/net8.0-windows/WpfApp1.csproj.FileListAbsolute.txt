@@ -62,3 +62,7 @@ C:\Users\elevenqtwo\Desktop\college-project\WpfApp1\obj\Debug\net8.0-windows\Reg
 C:\Users\elevenqtwo\Desktop\college-project\WpfApp1\obj\Debug\net8.0-windows\RegisterUserWindow.g.cs
 C:\Users\elevenqtwo\Desktop\college-project\WpfApp1\obj\Debug\net8.0-windows\LoginUserWindow.baml
 C:\Users\elevenqtwo\Desktop\college-project\WpfApp1\obj\Debug\net8.0-windows\LoginUserWindow.g.cs
+C:\Users\elevenqtwo\Desktop\college-project\WpfApp1\obj\Debug\net8.0-windows\AddProductWindow.baml
+C:\Users\elevenqtwo\Desktop\college-project\WpfApp1\obj\Debug\net8.0-windows\AddProductWindow.g.cs
+C:\Users\elevenqtwo\Desktop\college-project\WpfApp1\obj\Debug\net8.0-windows\ViewProductsWindow.baml
+C:\Users\elevenqtwo\Desktop\college-project\WpfApp1\obj\Debug\net8.0-windows\ViewProductsWindow.g.cs
