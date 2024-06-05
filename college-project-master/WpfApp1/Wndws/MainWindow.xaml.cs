@@ -1,6 +1,3 @@
-﻿using System.Text;
-using System.Windows;
-using System.Windows.Controls;
 ﻿using System.Windows;
 using WpfApp1.Service;
 
@@ -8,50 +5,30 @@ namespace WpfApp1
 {
     public partial class MainWindow : Window
     {
-        private readonly UserService _userService;
         private readonly ProductService _productService;
 
-        public MainWindow(UserService userService, ProductService productService)
+        public MainWindow()
         {
             InitializeComponent();
-            _userService = userService;
-            _productService = productService;
-            ConfigureUIBasedOnRole();
-        }
-
-        private void ConfigureUIBasedOnRole()
-        {
-            if (UserService.LoggedInUserRole == "Admin")
-            {
-                AdminButton.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                AdminButton.Visibility = Visibility.Collapsed;
-            }
-
-            if (UserService.LoggedInUserRole != "Admin" && UserService.LoggedInUserRole != "Manager")
-            {
-                AddProductButton.IsEnabled = false;
-            }
-        }
-
-        private void AdminButton_Click(object sender, RoutedEventArgs e)
-        {
-            AdminWindow adminWindow = new AdminWindow(_userService);
-            adminWindow.ShowDialog();
+            _productService = new ProductService();
         }
 
         private void AddProductButton_Click(object sender, RoutedEventArgs e)
         {
-            AddProductWindow addProductWindow = new AddProductWindow(_productService);
-            addProductWindow.ShowDialog();
+            var addProductWindow = new AddProductWindow(_productService);
+            addProductWindow.Show();
         }
 
         private void ViewProductsButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewProductsWindow viewProductsWindow = new ViewProductsWindow(_productService);
-            viewProductsWindow.ShowDialog();
+            var viewProductsWindow = new ViewProductsWindow(_productService);
+            viewProductsWindow.Show();
+        }
+
+        private void ViewCartButton_Click(object sender, RoutedEventArgs e)
+        {
+            var cartWindow = new CartWindow(_productService);
+            cartWindow.Show();
         }
     }
 }

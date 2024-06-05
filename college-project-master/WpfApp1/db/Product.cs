@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Windows.Media.Imaging;
 
 namespace WpfApp1.db
 {
@@ -9,6 +9,7 @@ namespace WpfApp1.db
         public string ProductDescription { get; set; }
         public byte[] ProductImage { get; set; }
         public decimal ProductPrice { get; set; }
+        public BitmapImage ImageSource { get; set; } 
 
         public Product(int productId, string productName, string productDescription, byte[] productImage, decimal productPrice)
         {

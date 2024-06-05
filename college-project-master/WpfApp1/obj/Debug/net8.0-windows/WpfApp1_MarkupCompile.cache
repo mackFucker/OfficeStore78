@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
 C:\Users\elevenqtwo\Desktop\college-project\WpfApp1\App.xaml
-6-1736404260
+7196899705
 
-14372065927
+16-731960367
 209-266106135
-Wndws\AddProductWindow.xaml;Wndws\AdminWindow.xaml;Wndws\LoginUserWindow.xaml;Wndws\MainWindow.xaml;Wndws\RegisterUserWindow.xaml;Wndws\ViewProductsWindow.xaml;
+Wndws\AddProductWindow.xaml;Wndws\AdminWindow.xaml;Wndws\CartWindow.xaml;Wndws\LoginUserWindow.xaml;Wndws\MainWindow.xaml;Wndws\RegisterUserWindow.xaml;Wndws\ViewProductsWindow.xaml;
 
 False
 

@@ -1,19 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using WpfApp1.db;
 using WpfApp1.Service;
 
 namespace WpfApp1
@@ -55,15 +43,14 @@ namespace WpfApp1
                 return image;
             }
         }
-    }
 
-    public class Product
-    {
-        public int ProductID { get; set; }
-        public string ProductName { get; set; }
-        public string ProductDescription { get; set; }
-        public decimal ProductPrice { get; set; }
-        public byte[] ProductImage { get; set; }
-        public BitmapImage ImageSource { get; set; }
+        private void AddToCartButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement element && element.Tag is Product product)
+            {
+                _productService.AddToCart(product, 1);
+                MessageBox.Show($"{product.ProductName} added to cart.");
+            }
+        }
     }
 }

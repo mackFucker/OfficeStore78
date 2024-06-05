@@ -1,27 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using WpfApp1.Service;
 
-namespace WpfApp1.Wndws
+namespace WpfApp1
 {
-    /// <summary>
-    /// Interaction logic for CartWindow.xaml
-    /// </summary>
     public partial class CartWindow : Window
     {
-        public CartWindow()
+        private readonly ProductService _productService;
+
+        public CartWindow(ProductService productService)
         {
             InitializeComponent();
+            _productService = productService;
+            LoadCartItems();
+        }
+
+        private void LoadCartItems()
+        {
+            List<CartItem> cartItems = _productService.GetCartItems();
+            CartDataGrid.ItemsSource = cartItems;
+            TotalPriceTextBlock.Text = _productService.GetTotalPrice().ToString("C");
+        }
+
+        private void BuyButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Purchase successful!");
+            _productService.ClearCart();
+            LoadCartItems();
+        }
+
+        private void ClearCartButton_Click(object sender, RoutedEventArgs e)
+        {
+            _productService.ClearCart();
+            LoadCartItems();
         }
     }
 }

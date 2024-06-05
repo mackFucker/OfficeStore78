@@ -1,15 +1,18 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Windows;
 using WpfApp1.db;
 
 namespace WpfApp1.Service
 {
-    public class ProductService
+    public class ProductService : INotifyPropertyChanged
     {
         private readonly MySqlConnection connection;
         private readonly Cart _cart;
+        private List<CartItem> _cartItems;
+        private decimal _totalPrice;
 
         public ProductService()
         {
@@ -18,6 +21,27 @@ namespace WpfApp1.Service
             EnsureProductsTableExists();
             _cart = new Cart();
         }
+
+        public List<CartItem> CartItems
+        {
+            get { return _cartItems; }
+            set
+            {
+                _cartItems = value;
+                OnPropertyChanged(nameof(CartItems));
+            }
+        }
+
+        public decimal TotalPrice
+        {
+            get { return _totalPrice; }
+            set
+            {
+                _totalPrice = value;
+                OnPropertyChanged(nameof(TotalPrice));
+            }
+        }
+
 
         private void EnsureProductsTableExists()
         {
@@ -42,6 +66,7 @@ namespace WpfApp1.Service
                 connection.Close();
             }
         }
+
 
         public bool AddProduct(string productName, string productDescription, byte[] productImage, decimal productPrice)
         {
@@ -78,14 +103,13 @@ namespace WpfApp1.Service
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    products.Add(new Product
-                    {
-                        ProductID = reader.GetInt32("ProductID"),
-                        ProductName = reader.GetString("ProductName"),
-                        ProductDescription = reader.GetString("ProductDescription"),
-                        ProductPrice = reader.GetDecimal("ProductPrice"),
-                        ProductImage = reader["ProductImage"] as byte[]
-                    });
+                    products.Add(new Product(
+                        reader.GetInt32("ProductID"),
+                        reader.GetString("ProductName"),
+                        reader.GetString("ProductDescription"),
+                        reader["ProductImage"] as byte[],
+                        reader.GetDecimal("ProductPrice")
+                    ));
                 }
                 reader.Close();
             }
@@ -99,6 +123,7 @@ namespace WpfApp1.Service
             }
             return products;
         }
+
 
         public void AddToCart(Product product, int quantity)
         {
@@ -120,9 +145,20 @@ namespace WpfApp1.Service
             return _cart.GetTotalPrice();
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         public void ClearCart()
         {
             _cart.ClearCart();
+
+            // Update CartItems and TotalPrice properties
+            CartItems = _cart.GetCartItems();
+            TotalPrice = _cart.GetTotalPrice();
         }
     }
 

@@ -24,7 +24,7 @@ namespace WpfApp1
             bool isLoggedIn = _userService.LoginUser(email, password);
             if (isLoggedIn)
             {
-                var mainWindow = new MainWindow(_userService, _productService);
+                var mainWindow = new MainWindow();
                 mainWindow.Show();
                 this.Close();
             }
