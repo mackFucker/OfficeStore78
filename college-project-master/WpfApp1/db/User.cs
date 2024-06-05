@@ -20,5 +20,7 @@ namespace WpfApp1.db
             HashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
             Role = role;
         }
+
+        public User() { }
     }
 }

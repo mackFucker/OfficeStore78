@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using MySql.Data.MySqlClient;
+using WpfApp1.db;
 
 namespace WpfApp1.Service
 {
@@ -272,5 +273,39 @@ namespace WpfApp1.Service
                 connection.Close();
             }
         }
+
+        internal List<User> GetAllUsers()
+        {
+            List<User> users = new List<User>();
+            try
+            {
+                connection.Open();
+                MySqlCommand command = new("SELECT id, email, first_name, last_name, role, password FROM users;", connection);
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    users.Add(new User(
+                        reader.GetInt32("id"),
+                        reader.GetString("email"),
+                        reader.GetString("first_name"),
+                        reader.GetString("last_name"),
+                        reader.GetString("password"), // Retrieve password
+                        reader.GetString("role")
+                    ));
+                }
+                reader.Close();
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show("Error fetching users: " + ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return users;
+        }
+
+
     }
 }

@@ -9,12 +9,14 @@ namespace WpfApp1.Service
     public class ProductService
     {
         private readonly MySqlConnection connection;
+        private readonly Cart _cart;
 
         public ProductService()
         {
             string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
             connection = new MySqlConnection(connectionString);
             EnsureProductsTableExists();
+            _cart = new Cart();
         }
 
         private void EnsureProductsTableExists()
@@ -53,7 +55,6 @@ namespace WpfApp1.Service
                 command.Parameters.AddWithValue("@productPrice", productPrice);
                 command.ExecuteNonQuery();
 
-                MessageBox.Show("Product added successfully!");
                 return true;
             }
             catch (MySqlException ex)
@@ -98,5 +99,32 @@ namespace WpfApp1.Service
             }
             return products;
         }
+
+        public void AddToCart(Product product, int quantity)
+        {
+            _cart.AddToCart(product, quantity);
+        }
+
+        public void RemoveFromCart(Product product)
+        {
+            _cart.RemoveFromCart(product);
+        }
+
+        public List<CartItem> GetCartItems()
+        {
+            return _cart.GetCartItems();
+        }
+
+        public decimal GetTotalPrice()
+        {
+            return _cart.GetTotalPrice();
+        }
+
+        public void ClearCart()
+        {
+            _cart.ClearCart();
+        }
     }
+
+    
 }

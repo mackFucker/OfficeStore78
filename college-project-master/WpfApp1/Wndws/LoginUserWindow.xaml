@@ -1,0 +1,36 @@
+﻿<Window x:Class="WpfApp1.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="LoginWindow" Height="275" Width="300">
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Email Label -->
+        <Label Content="Email" Grid.Row="0" Margin="0,0,0,5" HorizontalAlignment="Left"/>
+        <!-- Email TextBox -->
+        <TextBox x:Name="emailTextBox" Grid.Row="1" Margin="0,0,0,15" HorizontalAlignment="Stretch"/>
+
+        <!-- Password Label -->
+        <Label Content="Password" Grid.Row="2" Margin="0,0,0,5" HorizontalAlignment="Left"/>
+        <!-- PasswordBox -->
+        <PasswordBox x:Name="passwordBox" Grid.Row="3" Margin="0,0,0,15" HorizontalAlignment="Stretch"/>
+
+        <!-- Login Button -->
+        <Button x:Name="LoginButton" Grid.Row="4" Margin="0,0,0,20" HorizontalAlignment="Stretch" Click="LoginButton_Click">Login</Button>
+
+        <!-- Register TextBlock -->
+        <TextBlock Grid.Row="5" HorizontalAlignment="Center">
+            Don't have an account? <Hyperlink NavigateUri="Page1.xaml" RequestNavigate="Hyperlink_RequestNavigate">Register</Hyperlink>
+        </TextBlock>
+    </Grid>
+</Window>
